@@ -29,13 +29,13 @@ namespace ProduitMicroServices.Services
             return produit;
         }
 
-        public void Update(string id, Produit bookIn) =>
-            _produits.ReplaceOne(produit => produit.Id == id, bookIn);
+        public void Update(string id, Produit produitIn) =>
+            _produits.ReplaceOne(produit => produit.Id == id, produitIn);
 
-        public void Remove(Produit bookIn) =>
-            _produits.DeleteOne(produit => produit.Id == bookIn.Id);
+        public void Delete(Produit produitIn) =>
+            _produits.DeleteOne(produit => produit.Id == produitIn.Id);
 
-        public void Remove(string id) => 
+        public void Delete(string id) => 
             _produits.DeleteOne(produit => produit.Id == id);
     }
 }

@@ -40,7 +40,7 @@ namespace ProduitMicroServices
             //Add mongo db configuration
 
             //Add service connecto mongodb
-                services.AddSingleton<ProduitService>();
+            services.AddSingleton<ProduitService>();
 
 
             services.AddControllers();
@@ -59,6 +59,8 @@ namespace ProduitMicroServices
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "ProduitMicroServices v1"));
             }
+            app.UseStatusCodePagesWithRedirects("/api/Error/{0}");
+
 
             app.UseHttpsRedirection();
 

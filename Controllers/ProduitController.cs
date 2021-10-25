@@ -17,37 +17,43 @@ namespace ProduitMicroServices.Controllers
         private readonly ILogger<ProduitController> _logger;
         private readonly ProduitService _produitService;
 
-        public ProduitController(ILogger<ProduitController> logger,ProduitService produitService)
+        public ProduitController(ILogger<ProduitController> logger, ProduitService produitService)
         {
             _logger = logger;
             _produitService = produitService;
         }
         [HttpPost]
-        public JsonResult Create(Produit produit)
+        public IActionResult Post([FromBody] Produit produit)
         {
-         _produitService.Create(produit);
-            _logger.LogInformation("{0}", JsonSerializer.Serialize(produit));
+            _produitService.Create(produit);
+            // _logger.LogInformation("{0}", JsonSerializer.Serialize(produit));
             return new JsonResult(produit);
         }
         [HttpPut("{id:int}")]
-        public JsonResult Edit(string id, Produit produit)
+        public IActionResult Put( [FromRoute]string id, [FromBody] Produit produit)
         {
-
-            _logger.LogInformation("{0}", id);
-            _logger.LogInformation("{0}", JsonSerializer.Serialize(produit));
+            try
+            {
+                        _produitService.Update(id, produit);
             return new JsonResult(produit);
+            }
+            catch (Exception exp)
+            {
+                
+                return new BadRequestObjectResult(new {ErrorMessage=exp.Message});
+            }
         }
         [HttpDelete("{id:int}")]
-        public JsonResult Delete(string id)
+        public IActionResult Delete( [FromRoute]string id)
         {
-
-            _logger.LogInformation("{0}", id);
-            return new JsonResult(id);
+                if(String.IsNullOrEmpty(id))return BadRequest(id);
+                _produitService.Delete(id);
+            return new JsonResult(new {Message="Suppression réussie"});
         }
         [HttpGet]
         public IEnumerable<Produit> Get()
         =>
             _produitService.Get();
-        
+
     }
 }
